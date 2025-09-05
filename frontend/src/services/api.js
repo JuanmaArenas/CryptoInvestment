@@ -21,3 +21,11 @@ export const getQuotes = (ids) => {
 export const getCryptoDetails = (id) => {
     return apiClient.get(`/cryptos/info/${id}`);
 };
+
+export const getCategories = () => {
+    return apiClient.get('/categories');
+};
+
+export const getCategoryDetails = (id) => {
+    return apiClient.get(`/categories/${id}`);
+};

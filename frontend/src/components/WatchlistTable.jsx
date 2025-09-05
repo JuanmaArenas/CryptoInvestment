@@ -99,7 +99,16 @@ function WatchlistTable({ watchlist, onRemove, onRowClick }) {
                                     <TableCell>{data ? formatChange(data.quote.USD.percent_change_24h) : 'Loading...'}</TableCell>
                                     <TableCell align="right">
                                         {/* New "Remove" button */}
-                                        <Button variant="outlined" color="error" size="small" onClick={() => onRemove(crypto)}>
+                                        <Button
+                                            variant="outlined"
+                                            color="error"
+                                            size="small"
+                                            // Aceptamos el evento (e) y detenemos su propagación
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onRemove(crypto);
+                                            }}
+                                        >
                                             Remove
                                         </Button>
                                     </TableCell>

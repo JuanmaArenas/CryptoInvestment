@@ -1,10 +1,11 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { getCryptoList } from './services/api';
+import { getCryptoList, getCategories, getCategoryDetails } from './services/api';
 import CryptoTable from './components/CryptoTable';
 import WatchlistTable from './components/WatchlistTable';
-import { Container, CssBaseline, Typography, TextField, Box, Grid } from '@mui/material';
+import { Container, CssBaseline, Typography, TextField, Box, Grid, CircularProgress } from '@mui/material';
 import CryptoDetailModal from './components/CryptoDetailModal';
+import CategoryPills from './components/CategoryPills';
 
 function App() {
   const [allCryptos, setAllCryptos] = useState([]); // Lista completa original
@@ -18,6 +19,15 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCryptoId, setSelectedCryptoId] = useState(null);
 
+  // Nuevo estado para categorías y monedas
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [categoryCoins, setCategoryCoins] = useState([]);
+
+  // Estado para la carga y errores
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingCoins, setLoadingCoins] = useState(false);
+
   const handleOpenModal = (cryptoId) => {
     setSelectedCryptoId(cryptoId);
   };
@@ -25,6 +35,43 @@ function App() {
   const handleCloseModal = () => {
     setSelectedCryptoId(null);
   };
+
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+  };
+
+  // Cargar todas las categorías al iniciar
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategories();
+        setCategories(response.data);
+      } catch (err) {
+        console.error("Failed to load categories", err);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // Cargar las monedas de una categoría cuando se selecciona
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+
+    const fetchCategoryCoins = async () => {
+      setLoadingCoins(true);
+      try {
+        const response = await getCategoryDetails(selectedCategoryId);
+        setCategoryCoins(response.data.coins);
+      } catch (err) {
+        console.error("Failed to load category coins", err);
+      } finally {
+        setLoadingCoins(false);
+      }
+    };
+    fetchCategoryCoins();
+  }, [selectedCategoryId]);
 
   //Guardar la watchlist en localStorage cada vez que cambie
   useEffect(() => {
@@ -86,21 +133,23 @@ function App() {
           </Grid>
 
           {/* Columna Derecha: Búsqueda y Tabla Completa */}
-          <Grid item xs={12} md={7}> {/* Ocupa 12/12 en pantallas pequeñas, 7/12 en medianas y grandes */}
-            <Box sx={{ mb: 4 }}>
-              <TextField
-                fullWidth
-                label="Search Cryptocurrency"
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </Box>
+          <Grid item xs={12} md={7}>
+            {/* Reemplazamos el buscador con las pills de categorías */}
+            <CategoryPills
+              categories={categories}
+              selectedCategoryId={selectedCategoryId}
+              onSelect={handleCategorySelect}
+              loading={loadingCategories}
+            />
 
-            {loading && <p>Cargando criptomonedas...</p>}
-            {error && <p>{error}</p>}
-            {!loading && !error && (
-              <CryptoTable cryptos={filteredCryptos} onAdd={handleAddCrypto} onRowClick={handleOpenModal} />
+            {loadingCoins ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>
+            ) : (
+              <CryptoTable
+                cryptos={categoryCoins}
+                onAdd={handleAddCrypto}
+                onRowClick={handleOpenModal}
+              />
             )}
           </Grid>
 

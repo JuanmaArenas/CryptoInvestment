@@ -2,6 +2,7 @@ import 'dotenv/config'; // Forma moderna de cargar dotenv
 import express from 'express';
 import cors from 'cors';
 import cryptoRoutes from './routes/cryptoRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js'
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 
 // Rutas
 app.use('/api/cryptos', cryptoRoutes);
+app.use('/api/categories', categoryRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

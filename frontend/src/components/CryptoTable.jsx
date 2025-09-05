@@ -28,18 +28,21 @@ function CryptoTable({ cryptos, onAdd, onRowClick }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {cryptos.map((crypto) => (
+                    {cryptos.map((coin) => (
                         <TableRow
-                            key={crypto.id}
+                            key={coin.id}
                             hover // Add hover effect
-                            onClick={() => onRowClick(crypto.api_id)} // Trigger the click handler
+                            onClick={() => onRowClick(coin.id)} // Trigger the click handler
                             sx={{ cursor: 'pointer' }} // Change cursor on hover
                         >
-                            <TableCell>{crypto.name}</TableCell>
-                            <TableCell>{crypto.symbol}</TableCell>
+                            <TableCell>{coin.name}</TableCell>
+                            <TableCell>{coin.symbol}</TableCell>
                             <TableCell align="right">
                                 {/* New button that calls the onAdd function */}
-                                <Button variant="contained" size="small" onClick={() => onAdd(crypto)}>
+                                <Button variant="contained" size="small" onClick={(e) => {
+                                    e.stopPropagation(); // Evita que se abra el modal al hacer clic en el botón
+                                    onAdd({ id: coin.id, api_id: coin.id, name: coin.name, symbol: coin.symbol });
+                                }}>
                                     Add
                                 </Button>
                             </TableCell>

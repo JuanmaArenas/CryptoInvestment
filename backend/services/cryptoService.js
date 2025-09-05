@@ -53,3 +53,26 @@ export const getCryptoInfo = async (id) => {
         throw new Error('Failed to fetch crypto info from CoinMarketCap');
     }
 };
+
+export const getCategories = async () => {
+    try {
+        const response = await apiClient.get('/v1/cryptocurrency/categories?limit=10');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching categories:', error.message);
+        throw new Error('Failed to fetch categories from CoinMarketCap');
+    }
+};
+
+// NUEVA FUNCIÓN: Obtiene los detalles de una categoría, incluyendo sus monedas
+export const getCategoryById = async (id) => {
+    try {
+        const response = await apiClient.get('/v1/cryptocurrency/category', {
+            params: { id }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching category ID ${id}:`, error.message);
+        throw new Error('Failed to fetch category details from CoinMarketCap');
+    }
+};
