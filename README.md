@@ -1,136 +1,140 @@
 # CryptoInvestment Tracker 📈
 
-A simple and modern web application built for the "CryptoInvestment" group, allowing them to track a custom portfolio of cryptocurrencies in real-time. This project provides a consolidated, dynamic, single-page view of market data, replacing the need for scattered spreadsheets and websites.
+Una aplicación web simple y moderna construida para el grupo "CryptoInvestment", permitiéndoles seguir un portafolio personalizado de criptomonedas en tiempo real. Este proyecto proporciona una vista consolidada, dinámica y de una sola página de los datos del mercado, reemplazando la necesidad de hojas de cálculo y sitios web dispersos.
 
-
+[Imagen de la aplicación CryptoInvestment Tracker en modo oscuro]
 
 ## Features
 
-* **Real-Time Data:** View live price updates for selected cryptocurrencies every 30 seconds.
-* **Category-Based Browsing:** Discover and explore cryptocurrencies organized by categories (e.g., DeFi, A16Z Portfolio).
-* **Personalized Watchlist:** Create a custom watchlist by adding or removing cryptocurrencies with a single click.
-* **Detailed Information:** Click on any cryptocurrency to view detailed information, including its logo, description, social links, and market statistics in a modal window.
-* **Data Visualization:** Interactive charts display key statistics for each category and detailed market cap data for each individual cryptocurrency.
-* **Dark Mode UI:** A sleek, modern dark theme built with Material-UI for comfortable viewing.
-* **Persistent Watchlist:** The user's watchlist is saved in the browser's `localStorage`, so their selections are never lost.
-* **Responsive Design:** The layout adapts seamlessly from desktop to mobile devices.
+* **Datos en Tiempo Real:** Visualización de precios en vivo para las criptomonedas, con actualizaciones periódicas.
+* **Navegación por Categorías:** Descubre y explora criptomonedas organizadas por categorías (ej. DeFi, A16Z Portfolio).
+* **Watchlist Personalizada:** Crea una lista de seguimiento personalizada añadiendo o eliminando criptomonedas con un solo clic a través de un intuitivo ícono de estrella.
+* **Información Detallada:** Haz clic en cualquier criptomoneda para ver información detallada en una ventana modal, incluyendo su logo, descripción, enlaces sociales y estadísticas de mercado.
+* **Visualización de Datos:** Gráficos interactivos que muestran estadísticas clave para cada categoría y datos detallados de capitalización de mercado para cada criptomoneda individual.
+* **UI en Modo Oscuro:** Un tema oscuro elegante y moderno construido con Material-UI para una visualización cómoda.
+* **Watchlist Persistente:** La lista de seguimiento del usuario se guarda en el `localStorage` del navegador, por lo que sus selecciones nunca se pierden.
+* **Diseño Responsivo:** El layout se adapta perfectamente desde dispositivos de escritorio a móviles.
 
 ---
 
-## Project Requirements
+## Requisitos del Proyecto
 
-This project was developed based on the following functional and non-functional requirements.
+Este proyecto fue desarrollado en base a los siguientes requisitos funcionales y no funcionales.
 
-### Functional Requirements (RF)
+### Requisitos Funcionales (RF)
 
-* **RF1:** The system must allow users to select a custom set of cryptocurrencies for tracking.
-* **RF2:** The application must display updated information for each cryptocurrency, including price, percentage changes, and market volume.
-* **RF3:** The system must persist data over time (achieved by populating a local database with a master list of cryptos).
-* **RF4:** Users must be able to visualize data through charts.
-* **RF5:** The application must allow searching or filtering cryptocurrencies to add them to the watchlist.
-* **RF6:** The data for the selected cryptocurrencies must update automatically and periodically.
+* [cite_start]**RF1:** El sistema debe permitir a los usuarios seleccionar un conjunto personalizado de criptomonedas para su seguimiento. [cite: 1]
+* [cite_start]**RF2:** La aplicación debe mostrar información actualizada para cada criptomoneda, incluyendo precio, cambios porcentuales y volumen del mercado. [cite: 1]
+* [cite_start]**RF3:** El sistema debe persistir datos a lo largo del tiempo. [cite: 2]
+* **RF4:** Los usuarios deben poder visualizar datos a través de gráficos.
+* **RF5:** La aplicación debe permitir buscar o filtrar criptomonedas para añadirlas a la lista de seguimiento.
+* [cite_start]**RF6:** Los datos de las criptomonedas seleccionadas deben actualizarse de forma automática y periódica. [cite: 6]
 
-### Non-Functional Requirements (RNF)
+### Requisitos No Funcionales (RNF)
 
-* **RNF1:** The application must be a Single-Page Application (SPA) with dynamic updates and no page reloads.
-* **RNF2:** The interface must be responsive and adapt to different devices and resolutions.
-* **RNF3:** All market data must be obtained from the CoinMarketCap API.
-* **RNF4:** The backend must be developed in **Node.js**.
-* **RNF5:** The frontend must be developed using **React**.
-* **RNF6:** Data persistence must be handled by a **MySQL** database.
-* **RNF7:** The project must be managed with Git and hosted on GitHub.
-* **RNF8:** Data updates must be perceived by the user as "real-time".
+* [cite_start]**RNF1:** La aplicación debe ser una Single-Page Application (SPA) con actualizaciones dinámicas sin recarga de página. [cite: 3]
+* [cite_start]**RNF2:** La interfaz debe ser responsiva y adaptarse a diferentes dispositivos y resoluciones. [cite: 2, 12]
+* [cite_start]**RNF3:** Todos los datos de mercado deben obtenerse de la API de CoinMarketCap. [cite: 5]
+* [cite_start]**RNF4:** El backend debe ser desarrollado en **Node.js**. [cite: 4]
+* [cite_start]**RNF5:** El frontend debe ser desarrollado con **React**. [cite: 4]
+* [cite_start]**RNF6:** La persistencia de los datos debe ser manejada por una base de datos **MySQL**. 
+* [cite_start]**RNF7:** El proyecto debe ser gestionado con Git y alojado en GitHub. [cite: 11]
+* [cite_start]**RNF8:** Las actualizaciones de datos deben ser percibidas por el usuario como "en tiempo real". [cite: 1, 13]
 
 ---
 
-## Tech Stack & Tools
+## Tech Stack & Herramientas
 
 * **Backend:** Node.js, Express.js, Axios, `mysql2`
 * **Frontend:** React, Vite, Material-UI (MUI), Recharts
-* **Database:** MySQL
+* **Base de Datos:** MySQL
 * **API:** CoinMarketCap
-* **Version Control:** Git & GitHub
+* **Control de Versiones:** Git & GitHub
 
 ---
 
-## Project Setup & Installation
+## Instalación y Puesta en Marcha
 
-Follow these steps to run the project locally.
+Sigue estos pasos para ejecutar el proyecto localmente.
 
-### Prerequisites
+### Prerrequisitos
 
-* Node.js (v18 or higher recommended)
-* MySQL Server (e.g., via XAMPP, WAMP, or standalone installer)
-* A free API Key from [CoinMarketCap](https://coinmarketcap.com/api/).
+* Node.js (v18 o superior recomendado)
+* Servidor MySQL (ej. XAMPP, WAMP, o instalador standalone)
+* Una clave de API gratuita de [CoinMarketCap](https://coinmarketcap.com/api/).
 
-### 1. Database Setup
+### 1. Configuración de la Base de Datos
 
-1.  Run the `script.sql` file provided in the root directory in your MySQL client. This will create the `cryptoinvestment_db` database and the necessary tables.
+1.  Ejecuta el script `script.sql` (proporcionado en la raíz del proyecto) en tu cliente de MySQL. Esto creará la base de datos `cryptoinvestment_db` y las tablas necesarias.
 
-### 2. Backend Setup
+### 2. Configuración del Backend
 
-1.  Navigate to the backend directory:
+1.  Navega al directorio del backend:
     ```sh
     cd backend
     ```
-2.  Install the dependencies:
+2.  Instala las dependencias:
     ```sh
     npm install
     ```
-3.  Create a `.env` file in the `backend` directory and populate it with your credentials:
+3.  Crea un archivo `.env` en el directorio `backend` y llénalo con tus credenciales:
     ```env
     # CoinMarketCap API
-    COINMARKETCAP_API_KEY=your_api_key_here
+    COINMARKETCAP_API_KEY=tu_api_key_aqui
     COINMARKETCAP_BASE_URL=[https://pro-api.coinmarketcap.com](https://pro-api.coinmarketcap.com)
 
     # MySQL Database
     DB_HOST=localhost
     DB_USER=root
-    DB_PASSWORD=your_mysql_password
+    DB_PASSWORD=tu_contraseña_mysql
     DB_NAME=cryptoinvestment_db
     ```
-4.  Run the seeder script to populate the database with the list of all available cryptocurrencies. This is a one-time step.
+4.  Ejecuta el script seeder para poblar la base de datos con la lista de criptomonedas. Este es un paso que se realiza una sola vez.
     ```sh
     node seeder.mjs
     ```
-5.  Start the backend server:
+5.  Inicia el servidor del backend:
     ```sh
     node index.js
     ```
-    The server will be running on `http://localhost:5000`.
+    El servidor estará corriendo en `http://localhost:5000`.
 
-### 3. Frontend Setup
+### 3. Configuración del Frontend
 
-1.  Open a **new terminal** and navigate to the frontend directory:
+1.  Abre una **nueva terminal** y navega al directorio del frontend:
     ```sh
     cd frontend
     ```
-2.  Install the dependencies:
+2.  Instala las dependencias:
     ```sh
     npm install
     ```
-3.  Start the frontend development server:
+3.  Inicia el servidor de desarrollo del frontend:
     ```sh
     npm run dev
     ```
-    The application will be available at `http://localhost:5173` (or another port if 5173 is busy).
+    La aplicación estará disponible en `http://localhost:5173` (u otro puerto si está ocupado).
 
 ---
 
-## Development Process Overview
+## Proceso de Desarrollo
 
-The project was built iteratively, following a logical progression from backend to frontend.
+El proyecto fue construido de manera iterativa, siguiendo una progresión lógica desde el backend hacia el frontend.
 
-1.  **Analysis and Database Design:** The process began by analyzing the initial requirements to define the project's scope. A simple but effective two-table schema was designed in MySQL to store a master list of cryptocurrencies and their historical price data (though the historical data feature was later scoped out due to API limitations).
+1.  **Análisis y Diseño de la Base de Datos:** El proceso comenzó analizando los requisitos iniciales. Se diseñó un esquema simple pero efectivo de dos tablas en MySQL.
 
-2.  **Backend Development:** An Express.js server was built to act as a proxy between the frontend and the CoinMarketCap API. This approach protects the API key and allows for better control over the data. Endpoints were created to:
-    * Fetch all crypto categories (`/api/categories`).
-    * Fetch the coins within a specific category (`/api/categories/:id`).
-    * Fetch detailed metadata for a specific coin (`/api/cryptos/info/:id`).
-    * Fetch real-time price quotes for multiple coins (`/api/cryptos/quotes`).
+2.  **Desarrollo del Backend (Node.js):** Se construyó un servidor con Express.js para actuar como un proxy seguro entre el frontend y la API de CoinMarketCap. Se crearon endpoints para manejar categorías, cotizaciones en tiempo real e información detallada de las criptomonedas.
 
-3.  **Frontend Development:** The user interface was built with React and Vite for a fast development experience.
-    * **UI Library:** Material-UI (MUI) was chosen for its rich set of pre-built components and its robust theming system, which allowed for the easy implementation of the dark mode.
-    * **Component Architecture:** The UI was broken down into modular components (`CryptoTable`, `WatchlistTable`, `CategoryPills`, `CategoryCharts`, `CryptoDetailModal`) to keep the code clean and maintainable.
-    * **State Management:** React Hooks (`useState`, `useEffect`, `useMemo`) were used to manage all application state, from the fetched data to the user's watchlist.
-    * **Real-Time Updates:** A custom hook (`useCryptoPolling`) was created to handle the periodic fetching of price data, providing a centralized and efficient mechanism for live updates across the application.
+3.  **Desarrollo del Frontend (React):** La interfaz de usuario se construyó con React y Vite.
+    * **UI y Theming:** Se eligió Material-UI (MUI) por su rica biblioteca de componentes y su robusto sistema de theming, que facilitó la implementación del modo oscuro.
+    * **Arquitectura de Componentes:** La UI se dividió en componentes modulares como `CryptoTable`, `WatchlistTable`, `CategoryPills`, y `CryptoDetailModal`.
+    * **Gestión de Estado:** Se utilizaron Hooks de React (`useState`, `useEffect`, `useMemo`) para toda la gestión de estado.
+    * **Actualizaciones en Tiempo Real:** Se creó un hook personalizado (`useCryptoPolling`) para manejar la obtención periódica de precios, proporcionando un mecanismo centralizado y eficiente para las actualizaciones en vivo.
+
+### Nota sobre la Evolución de la Base de Datos
+
+> Al principio, pensamos en tener una gran lista de todas las criptomonedas en nuestra base de datos (la tabla `cryptocurrencies`) para hacer búsquedas rápidas. Sin embargo, cuando introdujimos la navegación por categorías, la aplicación evolucionó. Ahora, la forma principal de encontrar monedas es seleccionando una categoría y obteniendo esa lista directamente de la API. Esto hizo que nuestra tabla `cryptocurrencies` local quedara en segundo plano, casi como un respaldo que no se consulta activamente.
+>
+> Diseñamos la tabla `price_history` para cumplir el requisito de guardar un historial de precios. Cuando descubrimos que el plan gratuito de la API no nos daba acceso a datos históricos, esta tabla quedó completamente sin uso.
+>
+> En resumen: Para la funcionalidad que tiene la aplicación ahora mismo, la base de datos no es estrictamente necesaria (excepto por el seeder inicial). La aplicación funciona principalmente como una interfaz en tiempo real con la API de CoinMarketCap, y la única persistencia de datos crucial (la watchlist del usuario) la estamos manejando con `localStorage` en el navegador.
