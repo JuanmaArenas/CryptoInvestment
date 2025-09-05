@@ -17,3 +17,7 @@ export const getQuotes = (ids) => {
         params: { ids: ids.join(',') } // Joins array of IDs into "1,1027"
     });
 };
+
+export const getCryptoDetails = (id) => {
+    return apiClient.get(`/cryptos/info/${id}`);
+};

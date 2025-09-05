@@ -4,6 +4,7 @@ import { getCryptoList } from './services/api';
 import CryptoTable from './components/CryptoTable';
 import WatchlistTable from './components/WatchlistTable';
 import { Container, CssBaseline, Typography, TextField, Box, Grid } from '@mui/material';
+import CryptoDetailModal from './components/CryptoDetailModal';
 
 function App() {
   const [allCryptos, setAllCryptos] = useState([]); // Lista completa original
@@ -15,6 +16,15 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCryptoId, setSelectedCryptoId] = useState(null);
+
+  const handleOpenModal = (cryptoId) => {
+    setSelectedCryptoId(cryptoId);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCryptoId(null);
+  };
 
   //Guardar la watchlist en localStorage cada vez que cambie
   useEffect(() => {
@@ -72,7 +82,7 @@ function App() {
 
           {/* Columna Izquierda: Watchlist */}
           <Grid item xs={12} md={5}> {/* Ocupa 12/12 en pantallas pequeñas, 5/12 en medianas y grandes */}
-            <WatchlistTable watchlist={watchlist} onRemove={handleRemoveCrypto} />
+            <WatchlistTable watchlist={watchlist} onRemove={handleRemoveCrypto} onRowClick={handleOpenModal} />
           </Grid>
 
           {/* Columna Derecha: Búsqueda y Tabla Completa */}
@@ -90,12 +100,18 @@ function App() {
             {loading && <p>Cargando criptomonedas...</p>}
             {error && <p>{error}</p>}
             {!loading && !error && (
-              <CryptoTable cryptos={filteredCryptos} onAdd={handleAddCrypto} />
+              <CryptoTable cryptos={filteredCryptos} onAdd={handleAddCrypto} onRowClick={handleOpenModal} />
             )}
           </Grid>
 
         </Grid>
       </Container>
+
+      <CryptoDetailModal
+        cryptoId={selectedCryptoId}
+        open={Boolean(selectedCryptoId)}
+        onClose={handleCloseModal}
+      />
     </>
   );
 }

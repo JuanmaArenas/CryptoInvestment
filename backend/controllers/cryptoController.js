@@ -1,4 +1,4 @@
-import { getCryptosFromDB, getQuotesByIds } from '../services/cryptoService.js';
+import { getCryptosFromDB, getQuotesByIds, getCryptoInfo } from '../services/cryptoService.js';
 
 
 export const listAll = async (req, res) => {
@@ -19,6 +19,20 @@ export const getQuotes = async (req, res) => {
         }
         const data = await getQuotesByIds(ids);
         res.status(200).json(data.data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getInfo = async (req, res) => {
+    try {
+        const { id } = req.params; // Read ID from the URL path (e.g., /info/1)
+        if (!id) {
+            return res.status(400).json({ message: 'No se proporcionó un ID de moneda.' });
+        }
+        const data = await getCryptoInfo(id);
+        // The API nests the data under the ID, so we extract it
+        res.status(200).json(data.data[id]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

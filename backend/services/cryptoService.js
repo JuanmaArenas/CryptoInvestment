@@ -10,7 +10,7 @@ const apiClient = axios.create({
 
 export const getAllCryptos = async () => {
     try {
-        const response = await apiClient.get('/v1/cryptocurrency/map');
+        const response = await apiClient.get('/v1/cryptocurrency/map?limit=100');
         return response.data;
     } catch (error) {
         console.error('Error fetching from CoinMarketCap API:', error.message);
@@ -39,5 +39,17 @@ export const getQuotesByIds = async (ids) => {
     } catch (error) {
         console.error('Error fetching quotes from CoinMarketCap API:', error.message);
         throw new Error('Failed to fetch quotes from CoinMarketCap');
+    }
+};
+
+export const getCryptoInfo = async (id) => {
+    try {
+        const response = await apiClient.get('/v2/cryptocurrency/info', {
+            params: { id }
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching info for ID ${id}:`, error.message);
+        throw new Error('Failed to fetch crypto info from CoinMarketCap');
     }
 };

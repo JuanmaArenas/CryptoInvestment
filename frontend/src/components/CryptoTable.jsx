@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 // We now accept an 'onAdd' function as a prop
-function CryptoTable({ cryptos, onAdd }) {
+function CryptoTable({ cryptos, onAdd, onRowClick }) {
     return (
         <TableContainer component={Paper}>
             <Typography variant="h6" sx={{ p: 2 }}>
@@ -29,7 +29,12 @@ function CryptoTable({ cryptos, onAdd }) {
                 </TableHead>
                 <TableBody>
                     {cryptos.map((crypto) => (
-                        <TableRow key={crypto.id}>
+                        <TableRow
+                            key={crypto.id}
+                            hover // Add hover effect
+                            onClick={() => onRowClick(crypto.api_id)} // Trigger the click handler
+                            sx={{ cursor: 'pointer' }} // Change cursor on hover
+                        >
                             <TableCell>{crypto.name}</TableCell>
                             <TableCell>{crypto.symbol}</TableCell>
                             <TableCell align="right">

@@ -33,7 +33,7 @@ const formatChange = (change) => {
 };
 
 
-function WatchlistTable({ watchlist, onRemove }) {
+function WatchlistTable({ watchlist, onRemove, onRowClick }) {
     const [liveData, setLiveData] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -88,7 +88,12 @@ function WatchlistTable({ watchlist, onRemove }) {
                         {watchlist.map(crypto => {
                             const data = liveData[crypto.api_id];
                             return (
-                                <TableRow key={crypto.id}>
+                                <TableRow
+                                    key={crypto.id}
+                                    hover
+                                    onClick={() => onRowClick(crypto.api_id)}
+                                    sx={{ cursor: 'pointer' }}
+                                >
                                     <TableCell>{crypto.name} ({crypto.symbol})</TableCell>
                                     <TableCell>{data ? formatPrice(data.quote.USD.price) : 'Loading...'}</TableCell>
                                     <TableCell>{data ? formatChange(data.quote.USD.percent_change_24h) : 'Loading...'}</TableCell>
