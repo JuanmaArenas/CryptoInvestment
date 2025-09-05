@@ -156,45 +156,72 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container maxWidth="xl"> {/* Usamos maxWidth="xl" para dar más espacio */}
-        <Typography variant="h4" component="h1" gutterBottom sx={{ my: 4, textAlign: 'center' }}>
-          CryptoInvestment Tracker
-        </Typography>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          minWidth: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          bgcolor: 'grey.100',
+        }}
+      >
+        <Container maxWidth="xl">
+          <Typography variant="h4" component="h1" gutterBottom sx={{ my: 4, textAlign: 'center' }}>
+            CryptoInvestment Tracker
+          </Typography>
 
-        <Grid container spacing={4}> {/* Contenedor principal del Grid */}
+          {/* Contenedor principal del Grid */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2
+            }}>
 
-          {/* Columna Izquierda: Watchlist */}
-          <Grid item xs={12} md={5}> {/* Ocupa 12/12 en pantallas pequeñas, 5/12 en medianas y grandes */}
-            <WatchlistTable watchlist={watchlist} onRemove={handleRemoveCrypto} onRowClick={handleOpenModal} liveQuotes={liveQuotes} />
-          </Grid>
+            {/* --- COLUMNA DERECHA --- */}
+            <Grid item xs={12} md={7} sx={{
+              overflowY: 'auto', maxWidth: '50%'
+            }}>
+              <CategoryPills
+                categories={categories}
+                selectedCategoryId={selectedCategoryId}
+                onSelect={handleCategorySelect}
+                loading={loadingCategories}
+              />
 
-          {/* Columna Derecha: Búsqueda y Tabla Completa */}
-          <Grid item xs={12} md={7}>
-            {/* Reemplazamos el buscador con las pills de categorías */}
-            <CategoryPills
-              categories={categories}
-              selectedCategoryId={selectedCategoryId}
-              onSelect={handleCategorySelect}
-              loading={loadingCategories}
-            />
-
-            {loadingCoins ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>
-            ) : (
-              <>
+              {loadingCoins ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>
+              ) : (
+                <>
                   <CryptoTable
                     cryptos={categoryCoins}
                     onAdd={handleAddCrypto}
                     onRowClick={handleOpenModal}
                     liveQuotes={liveQuotes}
                   />
-                  <CategoryCharts data={selectedCategoryData} />
-              </>
-            )}
-          </Grid>
+                </>
+              )}
+            </Grid>
 
-        </Grid>
-      </Container>
+            {/* --- COLUMNA IZQUIERDA --- */}
+            <Grid item xs={12} md={5} sx={{
+              overflowY: 'auto', maxWidth: '50%'
+            }}>
+              <WatchlistTable
+                watchlist={watchlist}
+                onRemove={handleRemoveCrypto}
+                onRowClick={handleOpenModal}
+                liveQuotes={liveQuotes}
+              />
+              <CategoryCharts data={selectedCategoryData} />
+            </Grid>
+
+          </Box>
+        </Container>
+      </Box>
 
       <CryptoDetailModal
         cryptoId={selectedCryptoId}

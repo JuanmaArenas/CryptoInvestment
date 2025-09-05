@@ -25,7 +25,9 @@ const formatPrice = (price) => {
 // We now accept an 'onAdd' function as a prop
 function CryptoTable({ cryptos, onAdd, onRowClick, liveQuotes }) {
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{
+            overflowY: 'auto', maxHeight: 600
+        }}>
             <Typography variant="h6" sx={{ p: 2 }}>
                 Available Cryptocurrencies
             </Typography>
