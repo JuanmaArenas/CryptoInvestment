@@ -27,3 +27,17 @@ export const getCryptosFromDB = async () => {
         throw new Error('Failed to fetch data from database');
     }
 };
+
+export const getQuotesByIds = async (ids) => {
+    try {
+        const response = await apiClient.get('/v2/cryptocurrency/quotes/latest', {
+            params: {
+                id: ids // Pasamos los IDs como query param
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching quotes from CoinMarketCap API:', error.message);
+        throw new Error('Failed to fetch quotes from CoinMarketCap');
+    }
+};

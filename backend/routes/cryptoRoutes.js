@@ -1,8 +1,9 @@
 import express from 'express';
-import { listAll } from '../controllers/cryptoController.js';
+import { listAll, getQuotes } from '../controllers/cryptoController.js';
 
 const router = express.Router();
 
 router.get('/', listAll);
+router.get('/quotes', getQuotes);
 
 export default router;
