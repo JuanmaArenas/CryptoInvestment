@@ -9,7 +9,9 @@ import {
     TableRow,
     Paper,
     Typography,
-    Button // Import Button
+    Button, // Import Button
+    Avatar,
+    Box
 } from '@mui/material';
 
 
@@ -43,6 +45,7 @@ function CryptoTable({ cryptos, onAdd, onRowClick, liveQuotes }) {
                 <TableBody>
                     {cryptos.map((coin) => {
                         const quoteData = liveQuotes[coin.id];
+                        console.log({coin})
                         return (
                             <TableRow
                                 key={coin.id}
@@ -50,10 +53,18 @@ function CryptoTable({ cryptos, onAdd, onRowClick, liveQuotes }) {
                                 onClick={() => onRowClick(coin.id)} // Trigger the click handler
                                 sx={{ cursor: 'pointer' }} // Change cursor on hover
                             >
-                                <TableCell>{coin.name}</TableCell>
+                                <TableCell>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Avatar
+                                            src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`}
+                                            sx={{ width: 24, height: 24, mr: 1.5 }}
+                                        />
+                                        {coin.name}
+                                    </Box>
+                                </TableCell>
                                 <TableCell>{coin.symbol}</TableCell>
                                 <TableCell>
-                                    {quoteData ? '$'+quoteData?.price : '...'}
+                                    {quoteData ? '$' + quoteData?.price : '...'}
                                     {/**quoteData ? formatPrice(quoteData.price) : '...'**/}
                                 </TableCell>
                                 <TableCell align="right">

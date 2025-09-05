@@ -3,11 +3,29 @@ import React, { useState, useEffect } from 'react';
 import { getCryptoList, getCategories, getCategoryDetails } from './services/api';
 import CryptoTable from './components/CryptoTable';
 import WatchlistTable from './components/WatchlistTable';
-import { Container, CssBaseline, Typography, TextField, Box, Grid, CircularProgress } from '@mui/material';
+import {
+  Container, CssBaseline, Typography, TextField, Box, Grid, CircularProgress,
+  ThemeProvider,
+  createTheme
+} from '@mui/material';
 import CryptoDetailModal from './components/CryptoDetailModal';
 import CategoryPills from './components/CategoryPills';
 import CategoryCharts from './components/CategoryCharts';
 import { useCryptoPolling } from './hooks/useCryptoPolling';
+
+// 2. Definir nuestro tema oscuro
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark', // Esto activa el modo oscuro de MUI
+    primary: {
+      main: '#90caf9', // Un azul claro agradable para los elementos primarios
+    },
+    background: {
+      default: '#121212', // Un fondo oscuro estándar
+      paper: '#1e1e1e',   // El color para superficies como tablas y tarjetas
+    },
+  },
+});
 
 function App() {
   const [allCryptos, setAllCryptos] = useState([]); // Lista completa original
@@ -154,7 +172,7 @@ function App() {
   };
 
   return (
-    <>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Box
         sx={{
@@ -164,7 +182,6 @@ function App() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          bgcolor: 'grey.100',
         }}
       >
         <Container maxWidth="xl">
@@ -173,17 +190,16 @@ function App() {
           </Typography>
 
           {/* Contenedor principal del Grid */}
-          <Box
+          <Box className="main-container"
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
               gap: 2
             }}>
 
             {/* --- COLUMNA DERECHA --- */}
-            <Grid item xs={12} md={7} sx={{
-              overflowY: 'auto', maxWidth: '50%'
+            <Grid className="right-column" item xs={12} md={7} sx={{
+              overflowY: 'auto'
             }}>
               <CategoryPills
                 categories={categories}
@@ -207,8 +223,8 @@ function App() {
             </Grid>
 
             {/* --- COLUMNA IZQUIERDA --- */}
-            <Grid item xs={12} md={5} sx={{
-              overflowY: 'auto', maxWidth: '50%'
+            <Box className="left-column" item xs={12} md={5} sx={{
+              overflowY: 'auto'
             }}>
               <WatchlistTable
                 watchlist={watchlist}
@@ -217,7 +233,7 @@ function App() {
                 liveQuotes={liveQuotes}
               />
               <CategoryCharts data={selectedCategoryData} />
-            </Grid>
+            </Box>
 
           </Box>
         </Container>
@@ -228,7 +244,7 @@ function App() {
         open={Boolean(selectedCryptoId)}
         onClose={handleCloseModal}
       />
-    </>
+    </ ThemeProvider>
   );
 }
 

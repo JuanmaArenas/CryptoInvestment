@@ -11,7 +11,8 @@ import {
     Paper,
     Typography,
     Box,
-    Button
+    Button,
+    Avatar
 } from '@mui/material';
 
 // Helper to format the price
@@ -40,7 +41,7 @@ function WatchlistTable({ watchlist, onRemove, onRowClick, liveQuotes }) {
     }
 
     return (
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mb: 4, maxHeight: 300, overflowY: 'auto' }}>
             <Typography variant="h5" gutterBottom>My Watchlist</Typography>
             <TableContainer component={Paper}>
                 <Table>
@@ -62,7 +63,16 @@ function WatchlistTable({ watchlist, onRemove, onRowClick, liveQuotes }) {
                                     onClick={() => onRowClick(crypto.api_id)}
                                     sx={{ cursor: 'pointer' }}
                                 >
-                                    <TableCell>{crypto.name} ({crypto.symbol})</TableCell>
+                                    <TableCell>
+                                        {/* 2. Añadir Box para alinear logo y nombre */}
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Avatar
+                                                src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${crypto.api_id || crypto.id}.png`}
+                                                sx={{ width: 24, height: 24, mr: 1.5 }}
+                                            />
+                                            {crypto.name} ({crypto.symbol})
+                                        </Box>
+                                    </TableCell>
                                     <TableCell>{quoteData ? quoteData.price : 'Loading...'}</TableCell>
                                     {/* <TableCell>{quoteData ? formatPrice(quoteData.price) : 'Loading...'}</TableCell> */}
                                     <TableCell>{quoteData ? formatChange(quoteData.percent_change_24h) : 'Loading...'}</TableCell>
