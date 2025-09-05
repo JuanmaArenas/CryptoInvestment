@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getCryptoList, getCategories, getCategoryDetails } from './services/api';
 import CryptoTable from './components/CryptoTable';
 import WatchlistTable from './components/WatchlistTable';
@@ -59,8 +59,28 @@ function App() {
     return unique;
   }, [watchlist, categoryCoins]);
 
+  // 1. Creamos un Set de IDs para búsquedas súper rápidas.
+  //    useMemo asegura que no se recalcule en cada render.
+  const watchlistIds = useMemo(() => new Set(watchlist.map(c => c.api_id || c.id)), [watchlist]);
+
+  // 2. Nueva función para alternar el estado en la watchlist
+  const handleToggleWatchlist = (coin) => {
+    // Usamos el Set para verificar si la moneda ya está agregada
+    if (watchlistIds.has(coin.api_id)) {
+      // Si está, la eliminamos
+      setWatchlist(prev => prev.filter(c => c.api_id !== coin.api_id));
+    } else {
+      // Si no está, la agregamos
+      setWatchlist(prev => [...prev, coin]);
+    }
+  };
+
+  const handleRemoveFromWatchlist = (coin) => {
+    setWatchlist(prev => prev.filter(c => c.api_id !== coin.api_id));
+  };
+
   // Usamos nuestro hook para obtener los precios en tiempo real
-  const liveQuotes = useCryptoPolling(coinsToPoll, 30000);
+  const liveQuotes = useCryptoPolling(coinsToPoll, 31000);
 
   const handleOpenModal = (cryptoId) => {
     setSelectedCryptoId(cryptoId);
@@ -189,6 +209,15 @@ function App() {
             CryptoInvestment Tracker
           </Typography>
 
+          {/* AÑADIMOS EL NUEVO LABEL AQUÍ */}
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ textAlign: 'center', mb: 4 }}
+          >
+            Los precios se actualizan cada 30 segundos.
+          </Typography>
+
           {/* Contenedor principal del Grid */}
           <Box className="main-container"
             sx={{
@@ -214,7 +243,8 @@ function App() {
                 <>
                   <CryptoTable
                     cryptos={categoryCoins}
-                    onAdd={handleAddCrypto}
+                    onToggleWatchlist={handleToggleWatchlist}
+                    watchlistIds={watchlistIds}
                     onRowClick={handleOpenModal}
                     liveQuotes={liveQuotes}
                   />
@@ -228,7 +258,7 @@ function App() {
             }}>
               <WatchlistTable
                 watchlist={watchlist}
-                onRemove={handleRemoveCrypto}
+                onRemove={handleRemoveFromWatchlist}
                 onRowClick={handleOpenModal}
                 liveQuotes={liveQuotes}
               />

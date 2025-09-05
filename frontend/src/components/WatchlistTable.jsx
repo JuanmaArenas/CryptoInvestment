@@ -12,8 +12,10 @@ import {
     Typography,
     Box,
     Button,
-    Avatar
+    Avatar,
+    IconButton
 } from '@mui/material';
+import RemoveCircleOutline from '@mui/icons-material/RemoveCircleOutline'
 
 // Helper to format the price
 const formatPrice = (price) => {
@@ -50,7 +52,7 @@ function WatchlistTable({ watchlist, onRemove, onRowClick, liveQuotes }) {
                             <TableCell>Name</TableCell>
                             <TableCell>Price (Live)</TableCell>
                             <TableCell>24h % Change</TableCell>
-                            <TableCell align="right">Action</TableCell> {/* New Column */}
+                            <TableCell align="right"></TableCell> {/* New Column */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -77,19 +79,15 @@ function WatchlistTable({ watchlist, onRemove, onRowClick, liveQuotes }) {
                                     {/* <TableCell>{quoteData ? formatPrice(quoteData.price) : 'Loading...'}</TableCell> */}
                                     <TableCell>{quoteData ? formatChange(quoteData.percent_change_24h) : 'Loading...'}</TableCell>
                                     <TableCell align="right">
-                                        {/* New "Remove" button */}
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                            size="small"
-                                            // Aceptamos el evento (e) y detenemos su propagación
+                                        {/* 3. Reemplazar el Button con el IconButton */}
+                                        <IconButton
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 onRemove(crypto);
                                             }}
                                         >
-                                            Remove
-                                        </Button>
+                                            <RemoveCircleOutline color="error" />
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             );

@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getQuotes } from '../services/api';
 
-export const useCryptoPolling = (coins, interval = 30000) => {
+export const useCryptoPolling = (coins, interval = 31000) => {
     const [liveQuotes, setLiveQuotes] = useState({});
     // Usamos useRef para evitar que el ID del intervalo se resetee en cada render
     const intervalIdRef = useRef(null);
