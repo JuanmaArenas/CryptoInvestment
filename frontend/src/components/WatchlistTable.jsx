@@ -33,39 +33,7 @@ const formatChange = (change) => {
 };
 
 
-function WatchlistTable({ watchlist, onRemove, onRowClick }) {
-    const [liveData, setLiveData] = useState({});
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        // Function to fetch quotes
-        const fetchQuotes = async () => {
-            if (watchlist.length === 0) {
-                setLiveData({});
-                setLoading(false);
-                return;
-            }
-            try {
-                setLoading(true);
-                const ids = watchlist.map(crypto => crypto.api_id);
-                const response = await getQuotes(ids);
-                setLiveData(response.data);
-            } catch (error) {
-                console.error("Failed to fetch quotes", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchQuotes(); // Fetch immediately on change
-
-        // Set up an interval to refresh data every 60 seconds
-        const intervalId = setInterval(fetchQuotes, 60000);
-
-        // Clean up the interval when the component unmounts or watchlist changes
-        return () => clearInterval(intervalId);
-
-    }, [watchlist]); // This effect re-runs whenever the watchlist changes
+function WatchlistTable({ watchlist, onRemove, onRowClick, liveQuotes }) {
 
     if (watchlist.length === 0) {
         return <Typography>Your watchlist is empty. Add a coin from the list below.</Typography>;
@@ -79,14 +47,14 @@ function WatchlistTable({ watchlist, onRemove, onRowClick }) {
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
-                            <TableCell>Price</TableCell>
+                            <TableCell>Price (Live)</TableCell>
                             <TableCell>24h % Change</TableCell>
                             <TableCell align="right">Action</TableCell> {/* New Column */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {watchlist.map(crypto => {
-                            const data = liveData[crypto.api_id];
+                            const quoteData = liveQuotes[crypto.api_id || crypto.id];
                             return (
                                 <TableRow
                                     key={crypto.id}
@@ -95,8 +63,9 @@ function WatchlistTable({ watchlist, onRemove, onRowClick }) {
                                     sx={{ cursor: 'pointer' }}
                                 >
                                     <TableCell>{crypto.name} ({crypto.symbol})</TableCell>
-                                    <TableCell>{data ? formatPrice(data.quote.USD.price) : 'Loading...'}</TableCell>
-                                    <TableCell>{data ? formatChange(data.quote.USD.percent_change_24h) : 'Loading...'}</TableCell>
+                                    <TableCell>{quoteData ? quoteData.price : 'Loading...'}</TableCell>
+                                    {/* <TableCell>{quoteData ? formatPrice(quoteData.price) : 'Loading...'}</TableCell> */}
+                                    <TableCell>{quoteData ? formatChange(quoteData.percent_change_24h) : 'Loading...'}</TableCell>
                                     <TableCell align="right">
                                         {/* New "Remove" button */}
                                         <Button

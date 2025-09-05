@@ -6,6 +6,8 @@ import WatchlistTable from './components/WatchlistTable';
 import { Container, CssBaseline, Typography, TextField, Box, Grid, CircularProgress } from '@mui/material';
 import CryptoDetailModal from './components/CryptoDetailModal';
 import CategoryPills from './components/CategoryPills';
+import CategoryCharts from './components/CategoryCharts';
+import { useCryptoPolling } from './hooks/useCryptoPolling';
 
 function App() {
   const [allCryptos, setAllCryptos] = useState([]); // Lista completa original
@@ -14,6 +16,7 @@ function App() {
     const savedWatchlist = localStorage.getItem('cryptoWatchlist');
     return savedWatchlist ? JSON.parse(savedWatchlist) : [];
   });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,10 +26,23 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [categoryCoins, setCategoryCoins] = useState([]);
+  const [selectedCategoryData, setSelectedCategoryData] = useState(null);
 
   // Estado para la carga y errores
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingCoins, setLoadingCoins] = useState(false);
+
+
+  // Creamos una lista combinada y única de monedas para el polling
+  const coinsToPoll = React.useMemo(() => {
+    const combined = [...watchlist, ...categoryCoins];
+    // Eliminamos duplicados basados en el ID
+    const unique = Array.from(new Map(combined.map(c => [c.id, c])).values());
+    return unique;
+  }, [watchlist, categoryCoins]);
+
+  // Usamos nuestro hook para obtener los precios en tiempo real
+  const liveQuotes = useCryptoPolling(coinsToPoll, 30000);
 
   const handleOpenModal = (cryptoId) => {
     setSelectedCryptoId(cryptoId);
@@ -38,6 +54,14 @@ function App() {
 
   const handleCategorySelect = (categoryId) => {
     setSelectedCategoryId(categoryId);
+  };
+
+  // Añadir crypto a watchlist
+  const handleAddCrypto = (cryptoToAdd) => {
+    // Prevent adding the same crypto twice
+    if (!watchlist.find(crypto => crypto.id === cryptoToAdd.id)) {
+      setWatchlist([...watchlist, cryptoToAdd]);
+    }
   };
 
   // Cargar todas las categorías al iniciar
@@ -104,13 +128,25 @@ function App() {
     setFilteredCryptos(results);
   }, [searchTerm, allCryptos]);
 
-  // Añadir crypto a watchlist
-  const handleAddCrypto = (cryptoToAdd) => {
-    // Prevent adding the same crypto twice
-    if (!watchlist.find(crypto => crypto.id === cryptoToAdd.id)) {
-      setWatchlist([...watchlist, cryptoToAdd]);
-    }
-  };
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+
+    const fetchCategoryCoins = async () => {
+      setLoadingCoins(true);
+      setSelectedCategoryData(null); // Limpiamos los datos anteriores
+      try {
+        const response = await getCategoryDetails(selectedCategoryId);
+        setCategoryCoins(response.data.coins);
+        setSelectedCategoryData(response.data); // Guardamos los datos de la categoría
+      } catch (err) {
+        console.error("Failed to load category coins", err);
+      } finally {
+        setLoadingCoins(false);
+      }
+    };
+    fetchCategoryCoins();
+  }, [selectedCategoryId]);
+
 
   // Remover crypto de watchlist
   const handleRemoveCrypto = (cryptoToRemove) => {
@@ -129,7 +165,7 @@ function App() {
 
           {/* Columna Izquierda: Watchlist */}
           <Grid item xs={12} md={5}> {/* Ocupa 12/12 en pantallas pequeñas, 5/12 en medianas y grandes */}
-            <WatchlistTable watchlist={watchlist} onRemove={handleRemoveCrypto} onRowClick={handleOpenModal} />
+            <WatchlistTable watchlist={watchlist} onRemove={handleRemoveCrypto} onRowClick={handleOpenModal} liveQuotes={liveQuotes} />
           </Grid>
 
           {/* Columna Derecha: Búsqueda y Tabla Completa */}
@@ -145,11 +181,15 @@ function App() {
             {loadingCoins ? (
               <Box sx={{ display: 'flex', justifyContent: 'center' }}><CircularProgress /></Box>
             ) : (
-              <CryptoTable
-                cryptos={categoryCoins}
-                onAdd={handleAddCrypto}
-                onRowClick={handleOpenModal}
-              />
+              <>
+                  <CryptoTable
+                    cryptos={categoryCoins}
+                    onAdd={handleAddCrypto}
+                    onRowClick={handleOpenModal}
+                    liveQuotes={liveQuotes}
+                  />
+                  <CategoryCharts data={selectedCategoryData} />
+              </>
             )}
           </Grid>
 
