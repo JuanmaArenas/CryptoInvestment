@@ -51,7 +51,7 @@ function CryptoTable({ cryptos, onAdd, onRowClick, liveQuotes }) {
                                 <TableCell>{coin.name}</TableCell>
                                 <TableCell>{coin.symbol}</TableCell>
                                 <TableCell>
-                                    ${quoteData ? quoteData?.price : '...'}
+                                    {quoteData ? '$'+quoteData?.price : '...'}
                                     {/**quoteData ? formatPrice(quoteData.price) : '...'**/}
                                 </TableCell>
                                 <TableCell align="right">
