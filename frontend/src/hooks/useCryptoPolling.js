@@ -34,7 +34,7 @@ export const useCryptoPolling = (coins, interval = 31000) => {
             }
         };
 
-        fetchPrices(); // Llamada inicial
+        fetchPrices();
 
         // Establecemos el nuevo intervalo
         intervalIdRef.current = setInterval(fetchPrices, interval);

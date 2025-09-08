@@ -28,16 +28,12 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [allCryptos, setAllCryptos] = useState([]); // Lista completa original
-  const [filteredCryptos, setFilteredCryptos] = useState([]); // Lista para mostrar en la tabla
+  // Crytos favoritas en el localstorage
   const [watchlist, setWatchlist] = useState(() => {
     const savedWatchlist = localStorage.getItem('cryptoWatchlist');
     return savedWatchlist ? JSON.parse(savedWatchlist) : [];
   });
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCryptoId, setSelectedCryptoId] = useState(null);
 
   // Nuevo estado para categorías y monedas
@@ -140,32 +136,6 @@ function App() {
     localStorage.setItem('cryptoWatchlist', JSON.stringify(watchlist));
   }, [watchlist]);
 
-  // Carga inicial de todas las criptomonedas
-  useEffect(() => {
-    const fetchCryptos = async () => {
-      try {
-        const response = await getCryptoList();
-        setAllCryptos(response.data);
-        setFilteredCryptos(response.data); // Inicialmente, la lista filtrada es la lista completa
-      } catch (err) {
-        setError('No se pudieron cargar los datos.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCryptos();
-  }, []);
-
-  // Efecto para filtrar las criptomonedas cuando el término de búsqueda cambia
-  useEffect(() => {
-    const results = allCryptos.filter(crypto =>
-      crypto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredCryptos(results);
-  }, [searchTerm, allCryptos]);
-
   useEffect(() => {
     if (!selectedCategoryId) return;
 
@@ -209,7 +179,6 @@ function App() {
             CryptoInvestment Tracker
           </Typography>
 
-          {/* AÑADIMOS EL NUEVO LABEL AQUÍ */}
           <Typography
             variant="subtitle1"
             color="text.secondary"

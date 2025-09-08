@@ -108,9 +108,14 @@ function CryptoDetailModal({ cryptoId, open, onClose }) {
                         <Box sx={{ my: 2 }}>
                             {details.tags.map(tag => <Chip label={tag} key={tag} sx={{ mr: 1, mb: 1 }} />)}
                         </Box>
-                        <Link href={details.urls.website[0]} target="_blank" rel="noopener">
-                            Visit Website
-                        </Link>
+                        <Box className="d-flex j-between" >
+                            <Link href={details.urls.website[0]} target="_blank" rel="noopener">
+                                Visit Website
+                            </Link>
+                            <Link href={details.urls.source_code[0]} target="_blank" rel="noopener">
+                                Visit the source code
+                            </Link>
+                        </Box>
                     </Box>
                 ) : (
                     <Typography>Could not load details.</Typography>
